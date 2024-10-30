@@ -8,7 +8,7 @@
       "Password": "53cret",
       "Host": "postgres",
       "SSLMode": "prefer",
-      "MaintenanceDB": "sessionz",
+      "MaintenanceDB": "event",
       "PassFile": "/tmp/pgpassfile"
     }
   }
