@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: hendisantika
       POSTGRES_PASSWORD: 53cret
     volumes:
-      - postgres:/data/postgres
+      - ./postgres17:/data/postgres
     ports:
       - '5432'
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
     volumes:
-      - pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
       - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
     ports:
       - '5050:5050'
