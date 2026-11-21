@@ -1,8 +1,9 @@
 package id.my.hendisantika.springbootpgadmin;
 
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,16 +15,15 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * Time: 07.44
  * To change this template use File | Settings | File Templates.
  */
-@TestConfiguration
+@TestConfiguration(proxyBeanMethods = false)
 public class TestContainersConfig {
 
     @Bean
-    public PostgreSQLContainer<?> postgresContainer() {
-        PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:17-alpine3.20")
+    @ServiceConnection
+    public PostgreSQLContainer postgresContainer() {
+        return new PostgreSQLContainer("postgres:17-alpine")
                 .withDatabaseName("test")
                 .withUsername("test")
                 .withPassword("test");
-        postgresContainer.start();
-        return postgresContainer;
     }
 }

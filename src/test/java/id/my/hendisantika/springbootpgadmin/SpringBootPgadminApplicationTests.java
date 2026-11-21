@@ -1,37 +1,44 @@
 package id.my.hendisantika.springbootpgadmin;
 
+import id.my.hendisantika.springbootpgadmin.event.Event;
 import id.my.hendisantika.springbootpgadmin.event.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.context.annotation.Import;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Testcontainers
+@Import(TestContainersConfig.class)
 class SpringBootPgadminApplicationTests {
 
-    @Container
-    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:17-alpine3.20")
-            .withDatabaseName("test")
-            .withUsername("test")
-            .withPassword("test");
     @Autowired
     private EventRepository eventRepository;
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgresContainer::getUsername);
-        registry.add("spring.datasource.password", postgresContainer::getPassword);
-    }
 
     @BeforeEach
     void deleteAll() {
         eventRepository.deleteAll();
     }
 
+    @Test
+    void contextLoads() {
+        assertThat(eventRepository).isNotNull();
+    }
+
+    @Test
+    void shouldSaveAndFindEvent() {
+        Event event = new Event(1, "Spring I/O", "Spring conference", LocalDate.of(2026, 5, 21),
+                LocalDate.of(2026, 5, 22), LocalDate.of(2025, 11, 1), LocalDate.of(2026, 1, 15),
+                "Barcelona", "https://2026.springio.net");
+
+        eventRepository.save(event);
+
+        assertThat(eventRepository.findAll()).hasSize(1);
+        assertThat(eventRepository.findById(1)).hasValueSatisfying(found ->
+                assertThat(found.getName()).isEqualTo("Spring I/O"));
+    }
 }
