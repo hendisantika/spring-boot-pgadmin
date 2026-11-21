@@ -15,8 +15,8 @@ updates:
     assignees:
       - hendisantika
     commit-message:
-      prefix: "build(deps)"
-      prefix-development: "build(deps-dev)"
+      prefix: "build"
+      prefix-development: "test"
       include: scope
     groups:
       spring-boot:
@@ -53,7 +53,7 @@ updates:
     assignees:
       - hendisantika
     commit-message:
-      prefix: "ci(deps)"
+      prefix: "ci"
       include: scope
     groups:
       github-actions:
@@ -76,7 +76,7 @@ updates:
     assignees:
       - hendisantika
     commit-message:
-      prefix: "build(docker)"
+      prefix: "build"
       include: scope
     ignore:
       # keep PostgreSQL on the same major version to avoid data directory incompatibility
